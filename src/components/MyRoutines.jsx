@@ -13,6 +13,9 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
     goal: "",
     isPublic: true,
   });
+  const [toggleUpdate, setToggleUpdate] = useState(false);
+  const [updateNameState, setUpdateNameState] = useState("");
+  const [updateGoalState, setUpdateGoalState] = useState("");
   const [myRoutines, setMyRoutines] = useState([]);
 
   useEffect(() => {
@@ -77,6 +80,60 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
                       </div>
                     );
                   })}
+                  <button
+                    onClick={() =>
+                      toggleUpdate
+                        ? setToggleUpdate(false)
+                        : setToggleUpdate(true)
+                    }
+                  >
+                    Update Post
+                  </button>
+
+                  {toggleUpdate ? (
+                    <form
+                      onSubmit={async (event) => {
+                        event.preventDefault();
+                        const result = await updateRoutine(
+                          token,
+                          routine.id,
+                          routine.name,
+                          routine.goal
+                        );
+
+                        // console.log(result);
+                      }}
+                    >
+                      <input
+                        type="text"
+                        placeholder="update routine name"
+                        value={updateNameState.name}
+                        onChange={(event) =>
+                          setUpdateNameState({
+                            ...updateNameState,
+                            name: event.target.value,
+                          })
+                        }
+                        required
+                      ></input>
+                      <input
+                        type="text"
+                        placeholder="update your goal"
+                        value={updateGoalState.goal}
+                        onChange={(event) =>
+                          setUpdateGoalState({
+                            ...updateGoalState,
+                            goal: event.target.value,
+                          })
+                        }
+                        required
+                      ></input>
+                      <button type="submit">Submit</button>
+                    </form>
+                  ) : null}
+                  <button onClick={() => deleteRoutine(token, routine.id)}>
+                    Delete Post
+                  </button>
                 </div>
               );
             })
