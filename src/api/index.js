@@ -51,29 +51,28 @@ export const createRoutine = async (token, formState) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       name: formState.name,
       goal: formState.goal,
-      isPublic: formState.isPublic
+      isPublic: formState.isPublic,
     }),
   });
   const data = await response.json();
   return data;
 };
 
-export const updateRoutine = async (token, routineId, name, goal, isPublic) => {
+export const updateRoutine = async (token, routineId, name, goal) => {
   const response = await fetch(`${baseURL}/routines/${routineId}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       name,
       goal,
-      isPublic
     }),
   });
   const data = await response.json();
@@ -85,8 +84,8 @@ export const deleteRoutine = async (token, routineId) => {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
   const data = await response.json();
   return data;
@@ -96,8 +95,8 @@ export const getMyRoutines = async (token, username) => {
   const response = await fetch(`${baseURL}/users/${username}/routines`, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
   const data = await response.json();
   return data;
