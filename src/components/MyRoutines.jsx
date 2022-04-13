@@ -36,7 +36,7 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
         <input
           type="text"
           placeholder="routine name"
-          value={formState.name}
+          value={formState.name ?? ""}
           onChange={(event) =>
             setFormState({ ...formState, name: event.target.value })
           }
@@ -45,7 +45,7 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
         <input
           type="text"
           placeholder="your goal"
-          value={formState.goal}
+          value={formState.goal ?? ""}
           onChange={(event) =>
             setFormState({ ...formState, goal: event.target.value })
           }

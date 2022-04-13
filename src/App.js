@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { Register, Routines, Navbar, MyRoutines, Home, Login, Activities } from './components'
-import { myUserInfo } from './api'
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  Register,
+  Routines,
+  Navbar,
+  MyRoutines,
+  Home,
+  Login,
+  Activities,
+} from "./components";
+import { myUserInfo } from "./api";
 
 function App() {
   const [token, setToken] = useState("");
@@ -21,7 +29,7 @@ function App() {
         const result = await myUserInfo(token);
         setMyUser({
           id: result.id,
-          username: result.username
+          username: result.username,
         });
       }
     };
@@ -43,30 +51,23 @@ function App() {
             <Register setToken={setToken} token={token} />
           </Route>
           <Route path="/routines">
-            <Routines token={token}
-            />
+            <Routines token={token} />
           </Route>
 
           <Route path="/myroutines">
-            <MyRoutines
-              token={token}
-              myUser={myUser}
-              setMyUser={setMyUser}
-            />
+            <MyRoutines token={token} myUser={myUser} setMyUser={setMyUser} />
           </Route>
           <Route path="/activities">
             <Activities
               token={token}
-            // posts={posts}
-            // setPosts={setPosts}
-            // myUser={myUser}
-            // setMyUser={setMyUser}
+              // myUser={myUser}
+              // setMyUser={setMyUser}
             />
           </Route>
         </Switch>
       </div>
     </Router>
   );
-};
+}
 
-export default App
+export default App;
