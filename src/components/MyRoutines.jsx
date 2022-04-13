@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  createRoutine,
-  updateRoutine,
-  deleteRoutine,
-  getMyRoutines,
-} from "../api";
+import { createRoutine, getMyRoutines } from "../api";
 
 import { RoutineCard } from "./RoutineCard";
 
 const MyRoutines = ({ token, myUser, setMyUser }) => {
-  // Create, update (owned), delete (owned)
   const [formState, setFormState] = useState({
     name: "",
     goal: "",
     isPublic: true,
   });
-  // const [toggleUpdate, setToggleUpdate] = useState(false);
-  // const [updateNameState, setUpdateNameState] = useState("");
-  // const [updateGoalState, setUpdateGoalState] = useState("");
+
   const [myRoutines, setMyRoutines] = useState([]);
 
   useEffect(() => {
@@ -28,7 +20,7 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
     if (myUser.username) {
       myRoutines();
     }
-  }, [token, myUser, myRoutines]);
+  }, [token, myUser]);
 
   return (
     <div>
@@ -37,9 +29,8 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
         onSubmit={async (event) => {
           event.preventDefault();
           const result = await createRoutine(token, formState);
-          // setRoutines state?
-
-          console.log(result);
+          result.creatorName = myUser.username;
+          setMyRoutines([...myRoutines, result]);
         }}
       >
         <input
@@ -66,7 +57,13 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
         {myRoutines.length
           ? myRoutines.map((routine) => {
               return (
-                <RoutineCard routine={routine} token={token} key={routine.id} />
+                <RoutineCard
+                  myRoutines={myRoutines}
+                  setMyRoutines={setMyRoutines}
+                  routine={routine}
+                  token={token}
+                  key={routine.id}
+                />
               );
             })
           : null}
