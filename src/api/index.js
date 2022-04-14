@@ -120,6 +120,7 @@ export const myUserInfo = async (token) => {
 };
 
 export const addActivityToRoutine = async (token, activityId, routineId, updateCountState, updateDurationState) => {
+  console.log(updateCountState, updateDurationState)
   const response = await fetch(`${baseURL}/routines/${routineId}/activities`, {
     method: "POST",
     headers: {
