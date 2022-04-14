@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { createRoutine, getMyRoutines } from "../api";
+import { createRoutine, getActivities, getMyRoutines } from "../api";
 
 import { RoutineCard } from "./RoutineCard";
 
@@ -9,16 +9,19 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
     goal: "",
     isPublic: true,
   });
+  const [activityList, setActivityList] = useState([]);
 
   const [myRoutines, setMyRoutines] = useState([]);
 
   useEffect(() => {
-    const myRoutines = async () => {
+    const myRoutinesData = async () => {
       const data = await getMyRoutines(token, myUser.username);
+      const activityData = await getActivities();
+      setActivityList(activityData);
       setMyRoutines(data);
     };
     if (myUser.username) {
-      myRoutines();
+      myRoutinesData();
     }
   }, [token, myUser]);
 
@@ -29,7 +32,6 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
         onSubmit={async (event) => {
           event.preventDefault();
           const result = await createRoutine(token, formState);
-          result.creatorName = myUser.username;
           setMyRoutines([...myRoutines, result]);
         }}
       >
@@ -63,6 +65,8 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
                   routine={routine}
                   token={token}
                   key={routine.id}
+                  activityList={activityList}
+                  setActivityList={setActivityList}
                 />
               );
             })
