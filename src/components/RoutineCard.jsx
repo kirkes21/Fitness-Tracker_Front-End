@@ -5,6 +5,7 @@ import {
   deleteRoutine,
   getMyRoutines,
   addActivityToRoutine,
+  getActivities,
 } from "../api";
 
 export const RoutineCard = ({
@@ -14,6 +15,8 @@ export const RoutineCard = ({
   setMyRoutines,
   activityList,
   setActivityList,
+  setUpdate,
+  update,
 }) => {
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [toggleActivity, setToggleActivity] = useState(false);
@@ -21,12 +24,7 @@ export const RoutineCard = ({
   const [updateGoalState, setUpdateGoalState] = useState("");
   const [updateCountState, setUpdateCountState] = useState("");
   const [updateDurationState, setUpdateDurationState] = useState("");
-  const [activity, setActivity] = useState("any");
-
-  const [activityFormState, setActivityFormState] = useState({
-    count: "",
-    duration: "",
-  });
+  const [activityState, setActivityState] = useState();
 
   return (
     <div key={routine.id}>
@@ -72,7 +70,6 @@ export const RoutineCard = ({
               }
             });
             setMyRoutines(mappedRoutines);
-            console.log("testing", result);
           }}
         >
           <input
@@ -131,12 +128,32 @@ export const RoutineCard = ({
             event.preventDefault();
             const result = await addActivityToRoutine(
               token,
-              activity.id,
+              activityState,
               routine.id,
-              updateCountState.count,
-              updateDurationState.duration
+              updateCountState,
+              updateDurationState
             );
-            console.log("RESULT:", result);
+
+            setUpdate(!update);
+
+            // const updatedRoutine = myRoutines.find((routine) => {
+            //   if (routine.id === result.routineId) {
+            //     return true;
+            //   } else {
+            //     return false;
+            //   }
+            // });
+
+            // const warpedRoutines = myRoutines.filter((routine) => {
+            //   if (routine.id !== result.routineId) {
+            //     return true;
+            //   } else {
+            //     return false;
+            //   }
+            // });
+            // console.log(result);
+            // console.log(warpedRoutines, "WARPED", updatedRoutine, "UPDATED");
+            // setMyRoutines([...warpedRoutines, result]);
           }}
         >
           <label htmlFor="select-activity">
@@ -146,12 +163,12 @@ export const RoutineCard = ({
           <select
             name="activity"
             id="select-activity"
-            value={activity}
-            onChange={(event) => setActivity(event.target.value)}
+            value={activityState}
+            onChange={(event) => setActivityState(event.target.value)}
           >
             <option value="any">Any</option>
             {activityList.map((activity, idx) => (
-              <option key={`${idx}:${activity.name}`} value={activity.name}>
+              <option key={`${idx}:${activity.name}`} value={activity.id}>
                 {activity.name}
               </option>
             ))}

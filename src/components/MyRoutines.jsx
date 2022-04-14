@@ -12,6 +12,7 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
   const [activityList, setActivityList] = useState([]);
 
   const [myRoutines, setMyRoutines] = useState([]);
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
     const myRoutinesData = async () => {
@@ -23,7 +24,7 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
     if (myUser.username) {
       myRoutinesData();
     }
-  }, [token, myUser]);
+  }, [token, myUser, update]);
 
   return (
     <div>
@@ -67,6 +68,8 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
                   key={routine.id}
                   activityList={activityList}
                   setActivityList={setActivityList}
+                  setUpdate={setUpdate}
+                  update={update}
                 />
               );
             })
