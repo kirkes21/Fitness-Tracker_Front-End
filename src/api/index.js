@@ -63,7 +63,12 @@ export const createRoutine = async (token, formState) => {
   return data;
 };
 
-export const updateRoutine = async (token, routineId, name, goal) => {
+export const updateRoutine = async (
+  token,
+  routineId,
+  updateNameState,
+  updateGoalState
+) => {
   const response = await fetch(`${baseURL}/routines/${routineId}`, {
     method: "PATCH",
     headers: {
@@ -71,10 +76,11 @@ export const updateRoutine = async (token, routineId, name, goal) => {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      name,
-      goal,
+      name: updateNameState.name,
+      goal: updateGoalState.goal,
     }),
   });
+  console.log(response);
   const data = await response.json();
   return data;
 };
@@ -108,6 +114,39 @@ export const myUserInfo = async (token) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  });
+  const data = await response.json();
+  return data;
+};
+
+// export const addActivityToRoutine = async (routineId) => {
+//   const response = await fetch(`${baseURL}/routines/${routineId}/activities`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       activityId,
+//       count,
+//       duration,
+//     }),
+//   });
+//   const data = await response.json();
+//   return data;
+// };
+
+export const createActivity = async (token, formState) => {
+  const response = await fetch(`${baseURL}/activities`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      name: formState.name,
+      description: formState.description,
+    }),
   });
   const data = await response.json();
   return data;
