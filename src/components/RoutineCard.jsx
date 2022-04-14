@@ -6,6 +6,7 @@ import {
   getMyRoutines,
   addActivityToRoutine,
   getActivities,
+  deleteActivity,
 } from "../api";
 
 export const RoutineCard = ({
@@ -39,6 +40,14 @@ export const RoutineCard = ({
                 <h6>Description: {activity.description}</h6>
                 <h6>Duration: {activity.duration}</h6>
                 <h6>Count: {activity.count}</h6>
+                <button
+                  onClick={() => {
+                    deleteActivity(token, activity.routineActivityId);
+                    setUpdate(!update);
+                  }}
+                >
+                  Delete Activity
+                </button>
               </div>
             );
           })
@@ -135,25 +144,6 @@ export const RoutineCard = ({
             );
 
             setUpdate(!update);
-
-            // const updatedRoutine = myRoutines.find((routine) => {
-            //   if (routine.id === result.routineId) {
-            //     return true;
-            //   } else {
-            //     return false;
-            //   }
-            // });
-
-            // const warpedRoutines = myRoutines.filter((routine) => {
-            //   if (routine.id !== result.routineId) {
-            //     return true;
-            //   } else {
-            //     return false;
-            //   }
-            // });
-            // console.log(result);
-            // console.log(warpedRoutines, "WARPED", updatedRoutine, "UPDATED");
-            // setMyRoutines([...warpedRoutines, result]);
           }}
         >
           <label htmlFor="select-activity">

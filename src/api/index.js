@@ -153,3 +153,15 @@ export const createActivity = async (token, formState) => {
   const data = await response.json();
   return data;
 };
+
+export const deleteActivity = async (token, routineActivityId) => {
+  const response = await fetch(`${baseURL}/routine_activities/${routineActivityId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }
+  })
+  const data = await response.json()
+  return data
+}
