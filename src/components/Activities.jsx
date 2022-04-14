@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { getActivities, createActivity } from "../api";
 
-const Activities = (token) => {
+const Activities = ({ token }) => {
   const [activities, setActivities] = useState([]);
   const [formState, setFormState] = useState({
     name: "",
     description: "",
   });
+
   useEffect(() => {
     const fetchActivities = async () => {
       const activitiesFromApi = await getActivities();
@@ -22,6 +23,12 @@ const Activities = (token) => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
+          activities.map((activity) => {
+            if (activity.name === formState.name) {
+              alert("Activity name already exists!");
+            }
+            return null;
+          });
           const result = await createActivity(token, formState);
           console.log(result);
           setActivities([...activities, result]);
