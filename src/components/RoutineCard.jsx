@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 
-import {
-  updateRoutine,
-  deleteRoutine,
-  getMyRoutines,
-  addActivityToRoutine,
-  getActivities,
-  deleteActivity,
-  updateCD,
-} from "../api";
+import { updateRoutine, deleteRoutine, addActivityToRoutine } from "../api";
+import ActivityCard from "./ActivityCard";
 
 export const RoutineCard = ({
   routine,
@@ -21,15 +14,12 @@ export const RoutineCard = ({
   update,
 }) => {
   const [toggleUpdate, setToggleUpdate] = useState(false);
-  const [toggleCDUpdate, setToggleCDUpdate] = useState(false);
   const [toggleActivity, setToggleActivity] = useState(false);
   const [updateNameState, setUpdateNameState] = useState("");
   const [updateGoalState, setUpdateGoalState] = useState("");
   const [updateCountState, setUpdateCountState] = useState("");
   const [updateDurationState, setUpdateDurationState] = useState("");
   const [activityState, setActivityState] = useState();
-  const [updateC, setUpdateC] = useState("");
-  const [updateD, setUpdateD] = useState("");
 
   return (
     <div key={routine.id}>
@@ -39,70 +29,18 @@ export const RoutineCard = ({
       {routine.activities
         ? routine.activities.map((activity) => {
             return (
-              <div key={activity.id}>
-                <h3>Activity Name: {activity.name}</h3>
-                <h6>Description: {activity.description}</h6>
-                <h6>Duration: {activity.duration}</h6>
-                <h6>Count: {activity.count}</h6>
-                <button
-                  onClick={() => {
-                    deleteActivity(token, activity.routineActivityId);
-                    setUpdate(!update);
-                  }}
-                >
-                  Delete Activity
-                </button>
-                <button
-                  onClick={() =>
-                    toggleCDUpdate
-                      ? setToggleCDUpdate(false)
-                      : setToggleCDUpdate(true)
-                  }
-                >
-                  Update Count/Duration
-                </button>
-
-                {toggleCDUpdate ? (
-                  <form
-                    onSubmit={async (event) => {
-                      event.preventDefault();
-                      const result = await updateCD(
-                        token,
-                        activity.routineActivityId,
-                        updateC,
-                        updateD
-                      );
-                      console.log("Checking", activity.routineActivityId);
-                      setUpdate(!update);
-                    }}
-                  >
-                    <input
-                      type="text"
-                      placeholder="update count"
-                      value={updateC.count ?? ""}
-                      onChange={(event) =>
-                        setUpdateC({
-                          ...updateC,
-                          count: event.target.value,
-                        })
-                      }
-                    ></input>
-                    <input
-                      type="text"
-                      placeholder="update duration"
-                      value={updateD.duration ?? ""}
-                      onChange={(event) =>
-                        setUpdateD({
-                          ...updateD,
-                          duration: event.target.value,
-                        })
-                      }
-                      required
-                    ></input>
-                    <button type="submit">Submit</button>
-                  </form>
-                ) : null}
-              </div>
+              <ActivityCard
+                myRoutines={myRoutines}
+                setMyRoutines={setMyRoutines}
+                routine={routine}
+                token={token}
+                key={routine.id}
+                activityList={activityList}
+                setActivityList={setActivityList}
+                setUpdate={setUpdate}
+                update={update}
+                activity={activity}
+              />
             );
           })
         : null}
@@ -156,7 +94,6 @@ export const RoutineCard = ({
                 goal: event.target.value,
               })
             }
-            required
           ></input>
           <button type="submit">Submit</button>
         </form>
@@ -189,7 +126,7 @@ export const RoutineCard = ({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            const result = await addActivityToRoutine(
+            await addActivityToRoutine(
               token,
               activityState,
               routine.id,
