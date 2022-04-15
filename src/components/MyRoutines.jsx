@@ -3,7 +3,7 @@ import { createRoutine, getActivities, getMyRoutines } from "../api";
 
 import { RoutineCard } from "./RoutineCard";
 
-const MyRoutines = ({ token, myUser, setMyUser }) => {
+const MyRoutines = ({ token, myUser }) => {
   const [formState, setFormState] = useState({
     name: "",
     goal: "",

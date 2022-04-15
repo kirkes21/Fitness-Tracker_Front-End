@@ -60,8 +60,6 @@ function App() {
           <Route path="/activities">
             <Activities
               token={token}
-              // myUser={myUser}
-              // setMyUser={setMyUser}
             />
           </Route>
         </Switch>
