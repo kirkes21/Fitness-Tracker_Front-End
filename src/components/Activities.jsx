@@ -23,14 +23,22 @@ const Activities = ({ token }) => {
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          activities.map((activity) => {
-            if (activity.name === formState.name) {
-              alert("Activity name already exists!");
-            }
-            return null;
-          });
-          const result = await createActivity(token, formState);
-          setActivities([...activities, result]);
+
+          if (formState.name === "" || formState.description === "") {
+            alert("Invalid input!");
+            return;
+          }
+
+          if (
+            activities.filter((item) => item.name === formState.name).length !==
+            0
+          ) {
+            alert("Activity name already exists!");
+            return;
+          } else {
+            const result = await createActivity(token, formState);
+            setActivities([...activities, result]);
+          }
         }}
       >
         <input

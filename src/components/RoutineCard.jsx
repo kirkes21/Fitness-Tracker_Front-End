@@ -56,21 +56,14 @@ export const RoutineCard = ({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            const result = await updateRoutine(
+            await updateRoutine(
               token,
               routine.id,
               updateNameState,
               updateGoalState
             );
 
-            const mappedRoutines = myRoutines.map((routine) => {
-              if (routine.id === result.id) {
-                return result;
-              } else {
-                return routine;
-              }
-            });
-            setMyRoutines(mappedRoutines);
+            setUpdate(!update);
           }}
         >
           <input
