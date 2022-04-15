@@ -10,7 +10,6 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
     isPublic: true,
   });
   const [activityList, setActivityList] = useState([]);
-  const [routineExists, setRoutineExists] = useState(false);
 
   const [myRoutines, setMyRoutines] = useState([]);
   const [update, setUpdate] = useState(false);
@@ -27,21 +26,6 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
     }
   }, [token, myUser, update]);
 
-  async function routineFun(routine) {
-    if (formState.name === "" || routine.name === "") {
-      alert("Invalid input!");
-    }
-
-    if (routine.name === formState.name) {
-      setRoutineExists(true);
-      alert("Routine name already exists!");
-    } else {
-      const result = await createRoutine(token, formState);
-      setMyRoutines([...myRoutines, result]);
-      setRoutineExists(false);
-    }
-  }
-
   return (
     <div>
       <h2>My Routines</h2>
@@ -49,10 +33,21 @@ const MyRoutines = ({ token, myUser, setMyUser }) => {
         onSubmit={async (event) => {
           event.preventDefault();
 
-          myRoutines.map((routine) => {
-            routineFun(routine);
-            return null;
-          });
+          if (formState.name === "" || formState.goal === "") {
+            alert("Invalid input!");
+            return;
+          }
+
+          if (
+            myRoutines.filter((item) => item.name === formState.name).length !==
+            0
+          ) {
+            alert("Routine name already exists!");
+            return;
+          } else {
+            const result = await createRoutine(token, formState);
+            setMyRoutines([...myRoutines, result]);
+          }
         }}
       >
         <input
