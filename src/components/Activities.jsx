@@ -30,7 +30,6 @@ const Activities = ({ token }) => {
             return null;
           });
           const result = await createActivity(token, formState);
-          console.log(result);
           setActivities([...activities, result]);
         }}
       >
