@@ -119,8 +119,14 @@ export const myUserInfo = async (token) => {
   return data;
 };
 
-export const addActivityToRoutine = async (token, activityId, routineId, updateCountState, updateDurationState) => {
-  console.log(updateCountState, updateDurationState)
+export const addActivityToRoutine = async (
+  token,
+  activityId,
+  routineId,
+  updateCountState,
+  updateDurationState
+) => {
+  console.log(updateCountState, updateDurationState);
   const response = await fetch(`${baseURL}/routines/${routineId}/activities`, {
     method: "POST",
     headers: {
@@ -155,13 +161,35 @@ export const createActivity = async (token, formState) => {
 };
 
 export const deleteActivity = async (token, routineActivityId) => {
-  const response = await fetch(`${baseURL}/routine_activities/${routineActivityId}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+  const response = await fetch(
+    `${baseURL}/routine_activities/${routineActivityId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     }
-  })
-  const data = await response.json()
-  return data
-}
+  );
+  const data = await response.json();
+  return data;
+};
+
+export const updateCD = async (token, routineActivityId, updateC, updateD) => {
+  const response = await fetch(
+    `${baseURL}/routine_activities/${routineActivityId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        count: updateC.count,
+        duration: updateD.duration,
+      }),
+    }
+  );
+  const data = await response.json();
+  return data;
+};
