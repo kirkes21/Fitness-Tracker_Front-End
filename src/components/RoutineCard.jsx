@@ -1,13 +1,7 @@
 import React, { useState } from "react";
 
-import {
-  updateRoutine,
-  deleteRoutine,
-  getMyRoutines,
-  addActivityToRoutine,
-  getActivities,
-  deleteActivity,
-} from "../api";
+import { updateRoutine, deleteRoutine, addActivityToRoutine } from "../api";
+import ActivityCard from "./ActivityCard";
 
 export const RoutineCard = ({
   routine,
@@ -35,20 +29,18 @@ export const RoutineCard = ({
       {routine.activities
         ? routine.activities.map((activity) => {
             return (
-              <div key={activity.id}>
-                <h3>Activity Name: {activity.name}</h3>
-                <h6>Description: {activity.description}</h6>
-                <h6>Duration: {activity.duration}</h6>
-                <h6>Count: {activity.count}</h6>
-                <button
-                  onClick={() => {
-                    deleteActivity(token, activity.routineActivityId);
-                    setUpdate(!update);
-                  }}
-                >
-                  Delete Activity
-                </button>
-              </div>
+              <ActivityCard
+                myRoutines={myRoutines}
+                setMyRoutines={setMyRoutines}
+                routine={routine}
+                token={token}
+                key={routine.id}
+                activityList={activityList}
+                setActivityList={setActivityList}
+                setUpdate={setUpdate}
+                update={update}
+                activity={activity}
+              />
             );
           })
         : null}
@@ -57,7 +49,7 @@ export const RoutineCard = ({
           toggleUpdate ? setToggleUpdate(false) : setToggleUpdate(true)
         }
       >
-        Update Post
+        Update Routine
       </button>
 
       {toggleUpdate ? (
@@ -102,7 +94,6 @@ export const RoutineCard = ({
                 goal: event.target.value,
               })
             }
-            required
           ></input>
           <button type="submit">Submit</button>
         </form>
@@ -135,7 +126,7 @@ export const RoutineCard = ({
         <form
           onSubmit={async (event) => {
             event.preventDefault();
-            const result = await addActivityToRoutine(
+            await addActivityToRoutine(
               token,
               activityState,
               routine.id,
