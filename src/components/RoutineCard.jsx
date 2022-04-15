@@ -23,7 +23,7 @@ export const RoutineCard = ({
 
   return (
     <div key={routine.id}>
-      <h3>Name: {routine.name} </h3>
+      <h3>Name: {routine.name}</h3>
       <h5>Goal: {routine.goal}</h5>
 
       {routine.activities
